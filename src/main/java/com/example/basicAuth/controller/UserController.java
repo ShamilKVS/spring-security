@@ -2,12 +2,10 @@ package com.example.basicAuth.controller;
 
 import com.example.basicAuth.Enity.User;
 import com.example.basicAuth.repository.UserRepository;
-import com.example.basicAuth.security.UserAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,14 +14,12 @@ public class UserController {
 
 
     final private UserRepository userRepository;
-    final private UserAuthenticationProvider userAuthenticationProvider;
 
     final private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserRepository userRepository, UserAuthenticationProvider userAuthenticationProvider, BCryptPasswordEncoder passwordEncoder) {
+    public UserController(UserRepository userRepository,  BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.userAuthenticationProvider = userAuthenticationProvider;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -42,11 +38,7 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String showLoginForm(@RequestBody User user) {
-
-        Authentication authentication1 = new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
-        Authentication authentication = this.userAuthenticationProvider.authenticate(authentication1);
-
+    public String showLoginForm() {
         return "login";
     }
 
